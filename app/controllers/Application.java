@@ -20,15 +20,14 @@ public class Application extends Controller {
 		return ok("Got request " + request() + "!");
 	}
 
-	@BodyParser.Of(BodyParser.Json.class)
-	public static Promise<Result> getDataFromCassandra() {
+	//@BodyParser.Of(BodyParser.Json.class)
+	public static Promise<Result> getRows(String keyspace_name, String table_name) {
 
-		JsonNode requestData = request().body().asJson();
-
+		//JsonNode requestData = request().body().asJson()
 		Promise<JsonNode> response;
 
-		final CassandraReader cassandraread = new CassandraReader(requestData
-				.findPath("query").asText());
+		final CassandraReader cassandraread = new CassandraReader("SELECT * FROM " + 
+				keyspace_name+"."+table_name);
 
 		response = Promise.promise(new Function0<JsonNode>() {
 			public JsonNode apply() {
