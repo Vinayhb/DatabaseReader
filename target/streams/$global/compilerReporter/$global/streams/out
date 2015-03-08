@@ -1,0 +1,4 @@
+[0m[[31merror[0m] [0m/media/shree/D/chowta/classes/1/web2.0/shreeProject/webServerProject/app/controllers/Application.java:153: cannot find symbol[0m
+[0m[[31merror[0m] [0m  symbol:   method insertRow()[0m
+[0m[[31merror[0m] [0m  location: variable cassandraread of type cassandraQueryIntf.CassandraReader[0m
+[0m[[31merror[0m] [0mcassandraread.insertRow[0m

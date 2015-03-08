@@ -1,0 +1,22 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+#Read Cassandra Database
+POST /getDataFromCassandra    controllers.Application.getDataFromCassandra()
+
+
+#Insert a row
+POST /keyspace/:keyspace_name/table/:table_name/row	controllers.Application.addRow(keyspace_name: String, table_name: String)
+
+#Delete a row
+DELETE /keyspace/:keyspace_name/table/:table_name/row	controllers.Application.deleteRow(keyspace_name: String, table_name: String)
+
+#update a row
+PUT  /keyspace/:keyspace_name/table/:table_name/row	controllers.Application.updateRow(keyspace_name: String, table_name: String)

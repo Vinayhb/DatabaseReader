@@ -1,0 +1,22 @@
+New log file opened at Sun Mar 08 13:06:13 CET 2015 by 25231@shree-Vostro-2520
+Taking next connection to: 37165
+New client attempting to connect on port: 53308-37165
+  Address = /127.0.1.1:37165
+This client on port 53308 has uuid c02e708e-7682-48db-ae87-88a1c78bd380 configName play-fork-run humanReadableName Play Fork Run protocolVersion 1 featureTags Vector()
+Connected Clients: play-fork-run-c02e708e-7682-48db-ae87-88a1c78bd380
+Taking next connection to: 37165
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 37165
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 37165
+Checking to see if clients are empty...
+We have 1 non-daemon clients, continuing serving connections.
+Taking next connection to: 37165
+Checking to see if clients are empty...
+No non-daemon clients connected after 3 min. Shutting down.
+Server socket thread exiting.
+0 clients open, will close them...
+All client sockets have been closed.
+Closing the 25231@shree-Vostro-2520 logs at Sun Mar 08 13:18:14 CET 2015, goodbye.
