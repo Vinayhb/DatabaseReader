@@ -20,7 +20,7 @@ public class Application extends Controller {
 		return ok("Got request " + request() + "!");
 	}
 
-	//@BodyParser.Of(BodyParser.Json.class)
+	
 	public static Promise<Result> getRows(String keyspace_name, String table_name) {
 
 		//JsonNode requestData = request().body().asJson()
@@ -227,4 +227,272 @@ public class Application extends Controller {
 		return result;
 
 	}
+	
+	
+	/*
+	 * create a table:
+	 * POST  /keyspace/:keyspace_name/table/	controllers.Application.createTable(keyspace_name: String)
+	 * The POST Json will be of the format: 
+	 * {
+	 * "table":{	 "name":"tableName",
+	 * 				"columns":[
+	 * 							{"name":"col1",
+	 * 							 "type":"coltype1"},
+	 * 							{"name":"col2",
+	 * 							  "type":"coltype2"}
+	 * 						],
+	 * 				"primarykeys":["col1","col2"]
+	 * 		}
+	 * }
+	 */
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Promise<Result> createTable(String keyspace_name) {
+
+		JsonNode requestData = request().body().asJson();
+
+		Promise<JsonNode> response;
+		
+
+		StringBuilder query = new StringBuilder("CREATE TABLE "+ 
+						keyspace_name + "." + requestData.findPath("name").textValue() 
+				+" ( ");
+		
+
+		//Add columns and their types
+		Iterator<JsonNode> columns = requestData.findPath("columns").elements();
+		
+		
+		while (columns.hasNext()) {
+			JsonNode curCol = columns.next();
+			query.append(curCol.findPath("name").textValue() + " " + 
+					curCol.findPath("type").textValue());
+			if (columns.hasNext())
+				query.append(",");
+		}
+		
+		//Add primary keys
+		Iterator<JsonNode> primaryKeys = requestData.findPath("primarykeys").elements();
+		
+		if(primaryKeys.hasNext())
+		{
+			query.append(", PRIMARY KEY  (");
+		
+		while (primaryKeys.hasNext()) {
+			query.append(primaryKeys.next().textValue());
+			if (primaryKeys.hasNext())
+				query.append(",");
+		}
+		query.append(" ) " );
+
+		}
+		
+		query.append(")");
+		
+		final CassandraReader cassandraread = new CassandraReader(
+				query.toString());
+
+		response = Promise.promise(new Function0<JsonNode>() {
+			public JsonNode apply() {
+				return cassandraread.executeQuery();
+			}
+		});
+
+		Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+			public Result apply(JsonNode json) {
+				return ok(json);
+			}
+		});
+		return result;
+
+	}
+	
+	
+	/*
+	 * describe the table:
+	 * GET  /keyspace/:keyspace_name/table/:table_name	controllers.Application.describeTable(keyspace_name: String, table_name: String)
+	 * 
+	 */
+	public static Promise<Result> describeTable(String keyspace_name, String table_name) {
+
+		
+		Promise<JsonNode> response;
+		
+
+		StringBuilder query = new StringBuilder("DESCRIBE TABLE "+ 
+						keyspace_name + "." + table_name);
+		
+
+				
+		final CassandraReader cassandraread = new CassandraReader(
+				query.toString());
+
+		response = Promise.promise(new Function0<JsonNode>() {
+			public JsonNode apply() {
+				return cassandraread.executeQuery();
+			}
+		});
+
+		Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+			public Result apply(JsonNode json) {
+				return ok(json);
+			}
+		});
+		return result;
+
+	}
+	
+	/*
+	 * delete the table:
+	 * DELETE  /keyspace/:keyspace_name/table/:table_name	controllers.Application.deleteTable(keyspace_name: String, table_name: String)
+	 */
+	public static Promise<Result> deleteTable(String keyspace_name, String table_name) {
+
+	
+
+		Promise<JsonNode> response;
+		
+
+		StringBuilder query = new StringBuilder("DROP TABLE "+ 
+						keyspace_name + "." + table_name);
+		
+
+				
+		final CassandraReader cassandraread = new CassandraReader(
+				query.toString());
+
+		response = Promise.promise(new Function0<JsonNode>() {
+			public JsonNode apply() {
+				return cassandraread.executeQuery();
+			}
+		});
+
+		Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+			public Result apply(JsonNode json) {
+				return ok(json);
+			}
+		});
+		return result;
+
+	}
+	
+	
+	/*
+	 * Add a column:
+	 * POST  /keyspace/:keyspace_name/table/:table_name/column	controllers.Application.addColumn(keyspace_name: String, table_name: String)
+	 * 
+	 * The POST Json will be of the format: 
+	 * {
+	 * "column":{	 "name":"colName",
+	 * 				 "type":"colType"
+	 *  		  }
+	 * }
+	 */
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Promise<Result> addColumn(String keyspace_name, String table_name) {
+
+		JsonNode requestData = request().body().asJson();
+
+		Promise<JsonNode> response;
+		/*
+		 * Find a way to loop through all the elements in the request data and
+		 * prepae a query accordingly
+		 */
+
+		StringBuilder query = new StringBuilder("ALTER TABLE "+ keyspace_name + "." + table_name 
+				+" ADD " + requestData.findPath("column").findPath("name").textValue()+ " " + 
+				requestData.findPath("column").findPath("type").textValue());
+		
+
+		final CassandraReader cassandraread = new CassandraReader(
+				query.toString());
+
+		response = Promise.promise(new Function0<JsonNode>() {
+			public JsonNode apply() {
+				return cassandraread.executeQuery();
+			}
+		});
+
+		Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+			public Result apply(JsonNode json) {
+				return ok(json);
+			}
+		});
+		return result;
+
+	}
+	
+	/*
+	 * Alter a column: only type change
+	 * PUT  /keyspace/:keyspace_name/table/:table_name/column/:column_name	controllers.Application.AlterColumn(keyspace_name: String, table_name: String, column_name: String)
+	 * 
+	 * 
+	 * The PUT Json will be of the format: 
+	 * {
+	 * 				 "type":"colType"
+	 * }
+	 */
+	@BodyParser.Of(BodyParser.Json.class)
+	public static Promise<Result> AlterColumn(String keyspace_name, String table_name, String column_name) {
+
+		JsonNode requestData = request().body().asJson();
+
+		Promise<JsonNode> response;
+		
+		StringBuilder query = new StringBuilder("ALTER TABLE "+ keyspace_name + "." + table_name 
+				+" ALTER " + column_name + " TYPE " + 
+				requestData.findPath("type").textValue());
+		
+
+		final CassandraReader cassandraread = new CassandraReader(
+				query.toString());
+
+		response = Promise.promise(new Function0<JsonNode>() {
+			public JsonNode apply() {
+				return cassandraread.executeQuery();
+			}
+		});
+
+		Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+			public Result apply(JsonNode json) {
+				return ok(json);
+			}
+		});
+		return result;
+
+	}
+	
+	
+	/*
+	 * delete a column:
+	 * DELETE  /keyspace/:keyspace_name/table/:table_name/column/:column_name	controllers.Application.deleteColumn(keyspace_name: String, table_name: String, column_name: String)
+	 */
+	
+	public static Promise<Result> deleteColumn(String keyspace_name, String table_name, String column_name) {
+
+		
+
+		Promise<JsonNode> response;
+		
+		StringBuilder query = new StringBuilder("ALTER TABLE "+ keyspace_name + "." + table_name 
+				+" DROP " + column_name );
+		
+
+		final CassandraReader cassandraread = new CassandraReader(
+				query.toString());
+
+		response = Promise.promise(new Function0<JsonNode>() {
+			public JsonNode apply() {
+				return cassandraread.executeQuery();
+			}
+		});
+
+		Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+			public Result apply(JsonNode json) {
+				return ok(json);
+			}
+		});
+		return result;
+
+	}
+	
 }

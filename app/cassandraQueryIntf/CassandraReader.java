@@ -94,14 +94,15 @@ public class CassandraReader {
 
 	public JsonNode executeQuery() {
 		
-
+		ResultSet resultSet = null;
+		
 		ArrayNode result = JsonNodeFactory.instance.arrayNode();
 		result.add(query);
 		try {
 			
 			cassandraConnector.connect("127.0.0.1", 9042);
 
-			cassandraConnector.getSession().execute(query);
+			resultSet = cassandraConnector.getSession().execute(query);
 			
 
 		} catch (Exception e) {
