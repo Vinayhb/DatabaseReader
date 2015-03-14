@@ -12,6 +12,12 @@ import play.libs.F.Promise;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.index;
+
+import cassandraQueryIntf.CassandraConnect;
+import cassandraQueryIntf.CassandraKeyspace;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class Application extends Controller {
 
@@ -20,9 +26,147 @@ public class Application extends Controller {
 		//return ok("Got request " + request() + "!");
 	}
 
-	
-	public static Promise<Result> getRows(String keyspace_name, String table_name) {
 
+//TODO:comment on why is this about?
+    public static Result checkPreFlight() {
+    	  response().setHeader("Access-Control-Allow-Origin", "*");
+    	  response().setHeader("Access-Control-Allow-Methods", "POST");
+    	  response().setHeader("Access-Control-Allow-Headers", "accept, origin, Content-type, x-json, x-prototype-version, x-requested-with");
+    	  return ok();
+    	}
+
+	@BodyParser.Of(BodyParser.Json.class)
+public static Promise<Result> connectToCassandra() {
+
+    	JsonNode requestData = request().body().asJson();
+    	
+    	Promise<JsonNode> response;
+    	
+       
+    	final CassandraConnect connectcas = new CassandraConnect(requestData.findPath("hostname").asText(),requestData.findPath("port").asInt());
+        
+        response = Promise.promise(new Function0<JsonNode>() {
+          public JsonNode apply() {
+            return connectcas.connectCassandra();
+          }
+        });
+
+        Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+          public Result apply(JsonNode json) {
+        	  response().setHeader("Access-Control-Allow-Origin", "*");
+            return ok(json);
+          }
+        });
+        return result;
+
+      }
+
+
+    @BodyParser.Of(BodyParser.Json.class)
+    public static Promise<Result> getDataFromCassandra() {
+
+    	JsonNode requestData = request().body().asJson();
+    	
+    	Promise<JsonNode> response;
+    	
+       
+    	final CassandraReader cassandraread = new CassandraReader(requestData.findPath("query").asText());
+        
+        response = Promise.promise(new Function0<JsonNode>() {
+          public JsonNode apply() {
+            return cassandraread.getDataFromCassandra();
+          }
+        });
+
+        Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+          public Result apply(JsonNode json) {
+        	  response().setHeader("Access-Control-Allow-Origin", "*");
+            return ok(json);
+          }
+        });
+        return result;
+
+      }
+
+
+@BodyParser.Of(BodyParser.Json.class)
+public static Promise<Result> createKeyspace() {
+
+    	JsonNode requestData = request().body().asJson();
+    	
+    	Promise<JsonNode> response;
+    	
+       
+    	final CassandraKeyspace keyspace = new CassandraKeyspace(requestData.findPath("query").asText());
+        
+        response = Promise.promise(new Function0<JsonNode>() {
+          public JsonNode apply() {
+            return keyspace.createSchema();
+          }
+        });
+
+        Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+          public Result apply(JsonNode json) {
+        	  response().setHeader("Access-Control-Allow-Origin", "*");
+            return ok(json);
+          }
+        });
+        return result;
+
+      }
+@BodyParser.Of(BodyParser.Json.class)
+public static Promise<Result> deleteKeyspace() {
+
+    	JsonNode requestData = request().body().asJson();
+    	
+    	Promise<JsonNode> response;
+    	
+       
+    	final CassandraKeyspace keyspace = new CassandraKeyspace(requestData.findPath("query").asText());
+        
+        response = Promise.promise(new Function0<JsonNode>() {
+          public JsonNode apply() {
+            return keyspace.deleteSchema();
+          }
+        });
+
+        Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+          public Result apply(JsonNode json) {
+            return ok(json);
+          }
+        });
+        return result;
+
+      }
+
+
+@BodyParser.Of(BodyParser.Json.class)
+public static Promise<Result> getKeyspaces() {
+
+    	JsonNode requestData = request().body().asJson();
+    	
+    	Promise<JsonNode> response;
+    	
+       
+    	final CassandraKeyspace keyspaces = new CassandraKeyspace(requestData.findPath("query").asText());
+        
+        response = Promise.promise(new Function0<JsonNode>() {
+          public JsonNode apply() {
+            return keyspaces.getKeyspaces();
+          }
+        });
+
+        Promise<Result> result = response.map(new Function<JsonNode, Result>() {
+          public Result apply(JsonNode json) {
+        	 response().setHeader("Access-Control-Allow-Origin", "*");
+            return ok(json);
+          }
+        });
+        return result;
+
+      }
+
+	public static Promise<Result> getRows(String keyspace_name, String table_name) {
 		//JsonNode requestData = request().body().asJson()
 		Promise<JsonNode> response;
 

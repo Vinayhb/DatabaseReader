@@ -33,7 +33,7 @@ public class CassandraReader {
 
 		try {
 
-			cassandraConnector.connect("127.0.0.1", 9042);
+			//cassandraConnector.connect("127.0.0.1", 9042);
 
 			resultSet = cassandraConnector.getSession().execute(query);
 
