@@ -12,6 +12,14 @@ GET     /assets/*file               controllers.Assets.at(path="/public", file)
 #Read From Cassandra
 POST /getDataFromCassandra    controllers.Application.getDataFromCassandra()
 
+#Delete Keyspace
+POST /deleteKeyspace    controllers.Application.deleteKeyspace()
+OPTIONS   /deleteKeyspace    controllers.Application.checkPreFlight()
+
+#Describe Keyspaces
+POST /getKeyspaces	controllers.Application.getKeyspaces()
+OPTIONS   /getKeyspaces    controllers.Application.checkPreFlight()
+
 #Create New Keyspace
 POST /createKeyspace    controllers.Application.createKeyspace()
 OPTIONS   /createKeyspace    controllers.Application.checkPreFlight()
@@ -19,14 +27,6 @@ OPTIONS   /createKeyspace    controllers.Application.checkPreFlight()
 #Connect to Cassandra
 POST /connectToCassandra    controllers.Application.connectToCassandra()
 OPTIONS    /connectToCassandra    controllers.Application.checkPreFlight()
-
-#Describe Keyspaces
-POST /getKeyspaces	controllers.Application.getKeyspaces()
-OPTIONS   /getKeyspaces    controllers.Application.checkPreFlight()
-
-
-#Delete Keyspace
-POST /deleteKeyspace    controllers.Application.deleteKeyspace()
 
 #Read Cassandra Database
 GET /keyspace/:keyspace_name/table/:table_name/row controllers.Application.getRows(keyspace_name: String, table_name: String)
