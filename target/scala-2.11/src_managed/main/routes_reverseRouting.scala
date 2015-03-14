@@ -1,6 +1,6 @@
 // @SOURCE:/media/shree/D/chowta/classes/1/web2.0/shreeProject/webServerProject/conf/routes
-// @HASH:a1155fa4086fe573d6d8a587d97c70f68ca31662
-// @DATE:Sun Mar 08 12:56:39 CET 2015
+// @HASH:4b16db957c9de3a96c46b17c065dd79fda1deb08
+// @DATE:Sun Mar 08 21:41:34 CET 2015
 
 import Routes.{prefix => _prefix, defaultPrefix => _defaultPrefix}
 import play.core._
@@ -15,9 +15,15 @@ import _root_.play.libs.F
 import Router.queryString
 
 
-// @LINE:22
-// @LINE:19
-// @LINE:16
+// @LINE:39
+// @LINE:36
+// @LINE:33
+// @LINE:30
+// @LINE:27
+// @LINE:24
+// @LINE:21
+// @LINE:18
+// @LINE:15
 // @LINE:12
 // @LINE:9
 // @LINE:6
@@ -37,39 +43,73 @@ def at(file:String): Call = {
 }
                           
 
-// @LINE:22
-// @LINE:19
-// @LINE:16
+// @LINE:39
+// @LINE:36
+// @LINE:33
+// @LINE:30
+// @LINE:27
+// @LINE:24
+// @LINE:21
+// @LINE:18
+// @LINE:15
 // @LINE:12
 // @LINE:6
 class ReverseApplication {
 
 
-// @LINE:22
+// @LINE:12
+def getRows(keyspace_name:String, table_name:String): Call = {
+   import ReverseRouteContext.empty
+   Call("GET", _prefix + { _defaultPrefix } + "keyspace/" + implicitly[PathBindable[String]].unbind("keyspace_name", dynamicString(keyspace_name)) + "/table/" + implicitly[PathBindable[String]].unbind("table_name", dynamicString(table_name)) + "/row")
+}
+                        
+
+// @LINE:36
+def AlterColumn(keyspace_name:String, table_name:String, column_name:String): Call = {
+   import ReverseRouteContext.empty
+   Call("PUT", _prefix + { _defaultPrefix } + "keyspace/" + implicitly[PathBindable[String]].unbind("keyspace_name", dynamicString(keyspace_name)) + "/table/" + implicitly[PathBindable[String]].unbind("table_name", dynamicString(table_name)) + "/column/" + implicitly[PathBindable[String]].unbind("column_name", dynamicString(column_name)))
+}
+                        
+
+// @LINE:21
 def updateRow(keyspace_name:String, table_name:String): Call = {
    import ReverseRouteContext.empty
    Call("PUT", _prefix + { _defaultPrefix } + "keyspace/" + implicitly[PathBindable[String]].unbind("keyspace_name", dynamicString(keyspace_name)) + "/table/" + implicitly[PathBindable[String]].unbind("table_name", dynamicString(table_name)) + "/row")
 }
                         
 
-// @LINE:12
-def getDataFromCassandra(): Call = {
+// @LINE:24
+def createTable(keyspace_name:String): Call = {
    import ReverseRouteContext.empty
-   Call("POST", _prefix + { _defaultPrefix } + "getDataFromCassandra")
+   Call("POST", _prefix + { _defaultPrefix } + "keyspace/" + implicitly[PathBindable[String]].unbind("keyspace_name", dynamicString(keyspace_name)) + "/table/")
 }
                         
 
-// @LINE:16
+// @LINE:15
 def addRow(keyspace_name:String, table_name:String): Call = {
    import ReverseRouteContext.empty
    Call("POST", _prefix + { _defaultPrefix } + "keyspace/" + implicitly[PathBindable[String]].unbind("keyspace_name", dynamicString(keyspace_name)) + "/table/" + implicitly[PathBindable[String]].unbind("table_name", dynamicString(table_name)) + "/row")
 }
                         
 
-// @LINE:19
+// @LINE:18
 def deleteRow(keyspace_name:String, table_name:String): Call = {
    import ReverseRouteContext.empty
    Call("DELETE", _prefix + { _defaultPrefix } + "keyspace/" + implicitly[PathBindable[String]].unbind("keyspace_name", dynamicString(keyspace_name)) + "/table/" + implicitly[PathBindable[String]].unbind("table_name", dynamicString(table_name)) + "/row")
+}
+                        
+
+// @LINE:39
+def deleteColumn(keyspace_name:String, table_name:String, column_name:String): Call = {
+   import ReverseRouteContext.empty
+   Call("DELETE", _prefix + { _defaultPrefix } + "keyspace/" + implicitly[PathBindable[String]].unbind("keyspace_name", dynamicString(keyspace_name)) + "/table/" + implicitly[PathBindable[String]].unbind("table_name", dynamicString(table_name)) + "/column/" + implicitly[PathBindable[String]].unbind("column_name", dynamicString(column_name)))
+}
+                        
+
+// @LINE:33
+def addColumn(keyspace_name:String, table_name:String): Call = {
+   import ReverseRouteContext.empty
+   Call("POST", _prefix + { _defaultPrefix } + "keyspace/" + implicitly[PathBindable[String]].unbind("keyspace_name", dynamicString(keyspace_name)) + "/table/" + implicitly[PathBindable[String]].unbind("table_name", dynamicString(table_name)) + "/column")
 }
                         
 
@@ -80,15 +120,35 @@ def index(): Call = {
 }
                         
 
+// @LINE:27
+def describeTable(keyspace_name:String, table_name:String): Call = {
+   import ReverseRouteContext.empty
+   Call("GET", _prefix + { _defaultPrefix } + "keyspace/" + implicitly[PathBindable[String]].unbind("keyspace_name", dynamicString(keyspace_name)) + "/table/" + implicitly[PathBindable[String]].unbind("table_name", dynamicString(table_name)))
+}
+                        
+
+// @LINE:30
+def deleteTable(keyspace_name:String, table_name:String): Call = {
+   import ReverseRouteContext.empty
+   Call("DELETE", _prefix + { _defaultPrefix } + "keyspace/" + implicitly[PathBindable[String]].unbind("keyspace_name", dynamicString(keyspace_name)) + "/table/" + implicitly[PathBindable[String]].unbind("table_name", dynamicString(table_name)))
+}
+                        
+
 }
                           
 }
                   
 
 
-// @LINE:22
-// @LINE:19
-// @LINE:16
+// @LINE:39
+// @LINE:36
+// @LINE:33
+// @LINE:30
+// @LINE:27
+// @LINE:24
+// @LINE:21
+// @LINE:18
+// @LINE:15
 // @LINE:12
 // @LINE:9
 // @LINE:6
@@ -113,15 +173,43 @@ def at : JavascriptReverseRoute = JavascriptReverseRoute(
 }
               
 
-// @LINE:22
-// @LINE:19
-// @LINE:16
+// @LINE:39
+// @LINE:36
+// @LINE:33
+// @LINE:30
+// @LINE:27
+// @LINE:24
+// @LINE:21
+// @LINE:18
+// @LINE:15
 // @LINE:12
 // @LINE:6
 class ReverseApplication {
 
 
-// @LINE:22
+// @LINE:12
+def getRows : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Application.getRows",
+   """
+      function(keyspace_name,table_name) {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "keyspace/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("keyspace_name", encodeURIComponent(keyspace_name)) + "/table/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("table_name", encodeURIComponent(table_name)) + "/row"})
+      }
+   """
+)
+                        
+
+// @LINE:36
+def AlterColumn : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Application.AlterColumn",
+   """
+      function(keyspace_name,table_name,column_name) {
+      return _wA({method:"PUT", url:"""" + _prefix + { _defaultPrefix } + """" + "keyspace/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("keyspace_name", encodeURIComponent(keyspace_name)) + "/table/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("table_name", encodeURIComponent(table_name)) + "/column/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("column_name", encodeURIComponent(column_name))})
+      }
+   """
+)
+                        
+
+// @LINE:21
 def updateRow : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.Application.updateRow",
    """
@@ -132,18 +220,18 @@ def updateRow : JavascriptReverseRoute = JavascriptReverseRoute(
 )
                         
 
-// @LINE:12
-def getDataFromCassandra : JavascriptReverseRoute = JavascriptReverseRoute(
-   "controllers.Application.getDataFromCassandra",
+// @LINE:24
+def createTable : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Application.createTable",
    """
-      function() {
-      return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "getDataFromCassandra"})
+      function(keyspace_name) {
+      return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "keyspace/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("keyspace_name", encodeURIComponent(keyspace_name)) + "/table/"})
       }
    """
 )
                         
 
-// @LINE:16
+// @LINE:15
 def addRow : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.Application.addRow",
    """
@@ -154,12 +242,34 @@ def addRow : JavascriptReverseRoute = JavascriptReverseRoute(
 )
                         
 
-// @LINE:19
+// @LINE:18
 def deleteRow : JavascriptReverseRoute = JavascriptReverseRoute(
    "controllers.Application.deleteRow",
    """
       function(keyspace_name,table_name) {
       return _wA({method:"DELETE", url:"""" + _prefix + { _defaultPrefix } + """" + "keyspace/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("keyspace_name", encodeURIComponent(keyspace_name)) + "/table/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("table_name", encodeURIComponent(table_name)) + "/row"})
+      }
+   """
+)
+                        
+
+// @LINE:39
+def deleteColumn : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Application.deleteColumn",
+   """
+      function(keyspace_name,table_name,column_name) {
+      return _wA({method:"DELETE", url:"""" + _prefix + { _defaultPrefix } + """" + "keyspace/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("keyspace_name", encodeURIComponent(keyspace_name)) + "/table/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("table_name", encodeURIComponent(table_name)) + "/column/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("column_name", encodeURIComponent(column_name))})
+      }
+   """
+)
+                        
+
+// @LINE:33
+def addColumn : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Application.addColumn",
+   """
+      function(keyspace_name,table_name) {
+      return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "keyspace/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("keyspace_name", encodeURIComponent(keyspace_name)) + "/table/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("table_name", encodeURIComponent(table_name)) + "/column"})
       }
    """
 )
@@ -176,15 +286,43 @@ def index : JavascriptReverseRoute = JavascriptReverseRoute(
 )
                         
 
+// @LINE:27
+def describeTable : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Application.describeTable",
+   """
+      function(keyspace_name,table_name) {
+      return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "keyspace/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("keyspace_name", encodeURIComponent(keyspace_name)) + "/table/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("table_name", encodeURIComponent(table_name))})
+      }
+   """
+)
+                        
+
+// @LINE:30
+def deleteTable : JavascriptReverseRoute = JavascriptReverseRoute(
+   "controllers.Application.deleteTable",
+   """
+      function(keyspace_name,table_name) {
+      return _wA({method:"DELETE", url:"""" + _prefix + { _defaultPrefix } + """" + "keyspace/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("keyspace_name", encodeURIComponent(keyspace_name)) + "/table/" + (""" + implicitly[PathBindable[String]].javascriptUnbind + """)("table_name", encodeURIComponent(table_name))})
+      }
+   """
+)
+                        
+
 }
               
 }
         
 
 
-// @LINE:22
-// @LINE:19
-// @LINE:16
+// @LINE:39
+// @LINE:36
+// @LINE:33
+// @LINE:30
+// @LINE:27
+// @LINE:24
+// @LINE:21
+// @LINE:18
+// @LINE:15
 // @LINE:12
 // @LINE:9
 // @LINE:6
@@ -204,41 +342,83 @@ def at(path:String, file:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.
 }
                           
 
-// @LINE:22
-// @LINE:19
-// @LINE:16
+// @LINE:39
+// @LINE:36
+// @LINE:33
+// @LINE:30
+// @LINE:27
+// @LINE:24
+// @LINE:21
+// @LINE:18
+// @LINE:15
 // @LINE:12
 // @LINE:6
 class ReverseApplication {
 
 
-// @LINE:22
+// @LINE:12
+def getRows(keyspace_name:String, table_name:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Application.getRows(keyspace_name, table_name), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "getRows", Seq(classOf[String], classOf[String]), "GET", """Read Cassandra Database""", _prefix + """keyspace/$keyspace_name<[^/]+>/table/$table_name<[^/]+>/row""")
+)
+                      
+
+// @LINE:36
+def AlterColumn(keyspace_name:String, table_name:String, column_name:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Application.AlterColumn(keyspace_name, table_name, column_name), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "AlterColumn", Seq(classOf[String], classOf[String], classOf[String]), "PUT", """Modify a column """, _prefix + """keyspace/$keyspace_name<[^/]+>/table/$table_name<[^/]+>/column/$column_name<[^/]+>""")
+)
+                      
+
+// @LINE:21
 def updateRow(keyspace_name:String, table_name:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.Application.updateRow(keyspace_name, table_name), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "updateRow", Seq(classOf[String], classOf[String]), "PUT", """update a row""", _prefix + """keyspace/$keyspace_name<[^/]+>/table/$table_name<[^/]+>/row""")
 )
                       
 
-// @LINE:12
-def getDataFromCassandra(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
-   controllers.Application.getDataFromCassandra(), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "getDataFromCassandra", Seq(), "POST", """Read Cassandra Database""", _prefix + """getDataFromCassandra""")
+// @LINE:24
+def createTable(keyspace_name:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Application.createTable(keyspace_name), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "createTable", Seq(classOf[String]), "POST", """Create a table""", _prefix + """keyspace/$keyspace_name<[^/]+>/table/""")
 )
                       
 
-// @LINE:16
+// @LINE:15
 def addRow(keyspace_name:String, table_name:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.Application.addRow(keyspace_name, table_name), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "addRow", Seq(classOf[String], classOf[String]), "POST", """Insert a row""", _prefix + """keyspace/$keyspace_name<[^/]+>/table/$table_name<[^/]+>/row""")
 )
                       
 
-// @LINE:19
+// @LINE:18
 def deleteRow(keyspace_name:String, table_name:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.Application.deleteRow(keyspace_name, table_name), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "deleteRow", Seq(classOf[String], classOf[String]), "DELETE", """Delete a row""", _prefix + """keyspace/$keyspace_name<[^/]+>/table/$table_name<[^/]+>/row""")
+)
+                      
+
+// @LINE:39
+def deleteColumn(keyspace_name:String, table_name:String, column_name:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Application.deleteColumn(keyspace_name, table_name, column_name), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "deleteColumn", Seq(classOf[String], classOf[String], classOf[String]), "DELETE", """Delete a column""", _prefix + """keyspace/$keyspace_name<[^/]+>/table/$table_name<[^/]+>/column/$column_name<[^/]+>""")
+)
+                      
+
+// @LINE:33
+def addColumn(keyspace_name:String, table_name:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Application.addColumn(keyspace_name, table_name), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "addColumn", Seq(classOf[String], classOf[String]), "POST", """Create a column""", _prefix + """keyspace/$keyspace_name<[^/]+>/table/$table_name<[^/]+>/column""")
 )
                       
 
 // @LINE:6
 def index(): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
    controllers.Application.index(), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "index", Seq(), "GET", """ Home page""", _prefix + """""")
+)
+                      
+
+// @LINE:27
+def describeTable(keyspace_name:String, table_name:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Application.describeTable(keyspace_name, table_name), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "describeTable", Seq(classOf[String], classOf[String]), "GET", """Get table metadata""", _prefix + """keyspace/$keyspace_name<[^/]+>/table/$table_name<[^/]+>""")
+)
+                      
+
+// @LINE:30
+def deleteTable(keyspace_name:String, table_name:String): play.api.mvc.HandlerRef[_] = new play.api.mvc.HandlerRef(
+   controllers.Application.deleteTable(keyspace_name, table_name), HandlerDef(this.getClass.getClassLoader, "", "controllers.Application", "deleteTable", Seq(classOf[String], classOf[String]), "DELETE", """Drop a table""", _prefix + """keyspace/$keyspace_name<[^/]+>/table/$table_name<[^/]+>""")
 )
                       
 

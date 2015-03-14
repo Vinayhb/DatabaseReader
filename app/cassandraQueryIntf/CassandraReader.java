@@ -105,6 +105,11 @@ public class CassandraReader {
 			resultSet = cassandraConnector.getSession().execute(query);
 			
 
+			
+
+			
+			result.add(resultSet.toString());
+			
 		} catch (Exception e) {
 
 			play.Logger.debug("[Exception Throws In getDataFromCassandra]: "

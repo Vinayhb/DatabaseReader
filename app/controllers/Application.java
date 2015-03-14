@@ -16,8 +16,8 @@ import play.mvc.Result;
 public class Application extends Controller {
 
 	public static Result index() {
-		// return ok(index.render("Your new application is ready."));
-		return ok("Got request " + request() + "!");
+		 return ok(views.html.index.render("Your new application is ready."));
+		//return ok("Got request " + request() + "!");
 	}
 
 	
@@ -317,9 +317,10 @@ public class Application extends Controller {
 		
 		Promise<JsonNode> response;
 		
-
-		StringBuilder query = new StringBuilder("DESCRIBE TABLE "+ 
-						keyspace_name + "." + table_name);
+		StringBuilder query = new StringBuilder("SELECT * FROM system.schema_columns WHERE keyspace_name ='"
+				+keyspace_name+"'  AND columnfamily_name = '"+ table_name + "'");
+		//StringBuilder query = new StringBuilder("DESCRIBE TABLE "+ 
+					//	keyspace_name + "." + table_name);
 		
 
 				
@@ -328,7 +329,7 @@ public class Application extends Controller {
 
 		response = Promise.promise(new Function0<JsonNode>() {
 			public JsonNode apply() {
-				return cassandraread.executeQuery();
+				return cassandraread.getDataFromCassandra();
 			}
 		});
 
