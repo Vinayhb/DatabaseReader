@@ -27,7 +27,7 @@ public class Application extends Controller {
 	}
 
 
-//TODO:comment on why is this about?
+//TODO:comment 
     public static Result checkPreFlight() {
     	  response().setHeader("Access-Control-Allow-Origin", "*");
     	  response().setHeader("Access-Control-Allow-Methods", "POST");
